@@ -1,0 +1,1561 @@
+{
+  "id": "f8f0d811-3a2f-4620-8e14-a9dc4e14178f",
+  "name": "qpl",
+  "eClass": "d961eca2-da4a-40a6-b95e-a20315567ce5",
+  "uri": "http://qml",
+  "prefix": "qml",
+  "classes": [
+    {
+      "id": "0f07b12d-a10e-46a8-866f-26d722890c49",
+      "name": "Dataset",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 50,
+        "y": 50
+      },
+      "attributes": [
+        {
+          "id": "893108a5-7474-4272-ac9a-cad46e81682d",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "03dc7e37-055e-4281-9e38-accf058c86c2",
+          "many": true,
+          "name": "features",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "d03a3cd2-a7fa-40d4-89ed-ea6de472ffde",
+          "many": true,
+          "name": "labels",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "034581da-57ec-44fb-9601-5cda35091c64",
+      "name": "PreprocessingPipeline",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 330,
+        "y": 50
+      },
+      "attributes": [
+        {
+          "id": "d7249e60-632a-4bb6-b3f7-73c3110211f3",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "58a1ea60-1662-418e-9d74-c67d5dcd332f",
+          "many": false,
+          "name": "outputDimension",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "documentation": "Optional dimensionality of the feature vector after preprocessing."
+        }
+      ],
+      "references": [
+        {
+          "id": "fdde268d-7d64-4a4e-bdf2-fe235f0bc0b9",
+          "name": "dataset",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "0f07b12d-a10e-46a8-866f-26d722890c49",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 1
+          },
+          "containment": false,
+          "allowSelfReference": true
+        },
+        {
+          "id": "9457cc58-0f3a-402a-ba2d-76aec3590191",
+          "name": "steps",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "5b976de1-9abb-49bf-8487-1927558b773c",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 1,
+            "upperBound": 100
+          },
+          "containment": true,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "5b976de1-9abb-49bf-8487-1927558b773c",
+      "name": "PreprocessingStep",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": true,
+      "position": {
+        "x": 610,
+        "y": 50
+      },
+      "attributes": [
+        {
+          "id": "779656e4-2df9-4a18-a7fc-778d0e87903c",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "5fa99f6e-f4f2-49e7-adf9-b54ff2e342ff",
+          "many": false,
+          "name": "stepType",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "documentation": "Generic preprocessing identifier such as StandardScaler, PCA, MinMaxScaler, Normalizer, OneHotEncoder."
+        },
+        {
+          "id": "6d16fdda-e4cb-4f0a-8105-c86133fc85ec",
+          "many": false,
+          "name": "enabled",
+          "type": "boolean",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": true
+        },
+        {
+          "id": "13466ee4-4012-4dca-8f7b-b69bc5630329",
+          "many": true,
+          "name": "config",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "documentation": "Free-form key=value configuration entries for the step."
+        }
+      ],
+      "references": [],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "cb2c6abd-74c5-46ac-a396-02849bf1c682",
+      "name": "StandardScalerStep",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 890,
+        "y": 50
+      },
+      "attributes": [
+        {
+          "id": "15f71a30-112a-464a-9c67-bab48c7ac298",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": "standard_scaler"
+        }
+      ],
+      "references": [],
+      "superTypes": [
+        "5b976de1-9abb-49bf-8487-1927558b773c"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "f02d9c31-4fd8-420f-b961-74864b464159",
+      "name": "DimensionalityReductionStep",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": true,
+      "position": {
+        "x": 1170,
+        "y": 50
+      },
+      "attributes": [
+        {
+          "id": "360629b7-d647-46bc-ba49-e13cd91d2cef",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "48b1b7bf-254e-4e05-830a-265193c6075a",
+          "many": false,
+          "name": "targetDimension",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "documentation": "Optional dimensionality after this reduction step."
+        }
+      ],
+      "references": [],
+      "superTypes": [
+        "5b976de1-9abb-49bf-8487-1927558b773c"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "ce0f385f-4fef-4c8e-97b1-6bff85805f76",
+      "name": "PCAStep",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 1450,
+        "y": 50
+      },
+      "attributes": [
+        {
+          "id": "538536c2-efd0-4e70-a7ab-08a3a7655ae1",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": "pca"
+        }
+      ],
+      "references": [],
+      "superTypes": [
+        "f02d9c31-4fd8-420f-b961-74864b464159"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "43d9b2de-e3b9-45be-b04a-1d34bf815863",
+      "name": "DataEmbedding",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 330,
+        "y": 50
+      },
+      "attributes": [
+        {
+          "id": "14af2824-c577-4059-8e91-26017e98178e",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "2a649f2c-9c70-4fd6-bf96-8d28ddcd0972",
+          "many": false,
+          "name": "embeddingType",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [
+        {
+          "id": "0ec06797-df8d-42b9-a55e-2c4b23d26b86",
+          "name": "dataset",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "0f07b12d-a10e-46a8-866f-26d722890c49",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 1
+          },
+          "containment": false,
+          "allowSelfReference": true
+        },
+        {
+          "id": "68469498-d1c3-449c-9ca9-96ba4ebd7189",
+          "name": "preprocessingPipeline",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "034581da-57ec-44fb-9601-5cda35091c64",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 1
+          },
+          "containment": false,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "040e97d7-9214-49f9-95f4-1866e90471f6",
+      "name": "Optimizer",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 610,
+        "y": 50
+      },
+      "attributes": [
+        {
+          "id": "bc28b246-2fba-42ae-b097-38efd7b890c6",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "9ce51122-1a3d-4ee5-8f04-03e1834cb0ba",
+          "many": false,
+          "name": "maxIterations",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "d5307d84-8b36-4acf-b11c-2d7fba8aaf34",
+          "many": false,
+          "name": "optimizerType",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "177e8ab8-5f2e-4cc4-938b-1a46a8f2df83",
+          "many": false,
+          "name": "learningRate",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "8607ddd6-0dd0-4bd0-9a33-29b38219590e",
+          "many": false,
+          "name": "batchSize",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": 32,
+          "documentation": "Mini-batch size used during training."
+        }
+      ],
+      "references": [],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "491f1035-1fd5-43bc-a9f2-c3212c17cf15",
+      "name": "LossFunction",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 890,
+        "y": 50
+      },
+      "attributes": [
+        {
+          "id": "6a4988f0-2903-41ff-a389-6d0c4a17ce6e",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "561268d6-b186-4cee-ae6d-6e9838319e50",
+          "many": false,
+          "name": "minimization",
+          "type": "boolean",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "d66222c4-2891-4004-95e6-04cfa65877dd",
+          "many": false,
+          "name": "currentValue",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "9a909ad8-7149-4ee8-8cb5-0b369996a543",
+          "many": false,
+          "name": "function",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "f50904e0-2e3f-482b-81a9-ca46e7620d0d",
+          "many": false,
+          "name": "positiveClassWeight",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": 1.0,
+          "documentation": "Multiplicative weight applied to the positive class in binary classification losses."
+        }
+      ],
+      "references": [],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "2f87d63f-c7ba-4f3e-ab9e-5272cb8446cf",
+      "name": "Prediction",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 1170,
+        "y": 50
+      },
+      "attributes": [
+        {
+          "id": "7db76f2e-39fd-40ca-91c8-3b23e161e200",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "869f0f37-59ca-4d84-bdcd-1c250f8c5d12",
+          "many": false,
+          "name": "predictedValue",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "a3f1c2e4-8b7d-4f9a-b2c1-6d5e9f0a1b3c",
+          "many": false,
+          "name": "postprocessingMethod",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": "Identity",
+          "documentation": "One of: Identity | Sigmoid | Softmax | Threshold. Controls how raw circuit output is mapped to a prediction. Identity = pass-through (default). Sigmoid maps (-inf,+inf) -> (0,1). Softmax normalises a vector to a probability distribution. Threshold applies a hard cut-off at the value given by the threshold attribute."
+        },
+        {
+          "id": "b4e2d3f5-9c8e-5g0b-c3d2-7e6f0g1b2c4d",
+          "many": false,
+          "name": "threshold",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": 0,
+          "documentation": "Decision boundary used when postprocessingMethod is Threshold. Predictions above this value are mapped to 1, at or below it to 0. Ignored for all other postprocessingMethod values."
+        },
+        {
+          "id": "0c9c06e8-b091-4633-896a-c0b80c74f698",
+          "many": false,
+          "name": "outputScale",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": 1.0,
+          "documentation": "Affine scale applied to raw circuit output before postprocessing."
+        },
+        {
+          "id": "c86b0554-91aa-44aa-ab17-73f2078ad108",
+          "many": false,
+          "name": "outputShift",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": 0.0,
+          "documentation": "Affine shift applied to raw circuit output before postprocessing."
+        }
+      ],
+      "references": [
+        {
+          "id": "3eff6160-2570-44bc-a4c6-31f81280e508",
+          "name": "lossFunction",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "491f1035-1fd5-43bc-a9f2-c3212c17cf15",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 1
+          },
+          "containment": true,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "96f81ad8-e62f-4eea-8b14-8895dd7e0da6",
+      "name": "Task",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 50,
+        "y": 270
+      },
+      "attributes": [
+        {
+          "id": "67b2955e-bac6-483e-98f5-364d654960c5",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "5e34a23a-2496-452d-91d3-ae05e708fc1e",
+          "many": false,
+          "name": "taskType",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [
+        {
+          "id": "3bfbcd73-165f-47fb-a237-a7f0d0aff6fb",
+          "name": "prediction",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "2f87d63f-c7ba-4f3e-ab9e-5272cb8446cf",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 1
+          },
+          "containment": true,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "3f8c70e2-2295-481b-a780-d6421bfa589f",
+      "name": "Observable",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": true,
+      "position": {
+        "x": 333.1116121758737,
+        "y": 266.8883878241263
+      },
+      "attributes": [
+        {
+          "id": "1dfdcbd5-10a2-4e67-8b80-5313321fae36",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "8b28cdc3-1b8c-4290-8829-85da6f1e0558",
+          "many": true,
+          "name": "qubits",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "8de55135-0421-42bf-99e9-716667575bed",
+      "name": "PauliX",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 610,
+        "y": 270
+      },
+      "attributes": [
+        {
+          "id": "a96ddcfb-7b8d-4711-8067-d812d2e57346",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        }
+      ],
+      "references": [],
+      "superTypes": [
+        "3f8c70e2-2295-481b-a780-d6421bfa589f"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "b1c2f849-2a85-49af-8547-b8b61a7fa944",
+      "name": "PauliY",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 890,
+        "y": 270
+      },
+      "attributes": [
+        {
+          "id": "1b95d73f-1352-4040-bb02-42bc9471a134",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        }
+      ],
+      "references": [],
+      "superTypes": [
+        "3f8c70e2-2295-481b-a780-d6421bfa589f"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "8c26d657-7841-4756-91f0-b9260560f7f6",
+      "name": "PauliZ",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 1170,
+        "y": 270
+      },
+      "attributes": [
+        {
+          "id": "ec876349-d13d-4400-a0b6-3fd07b780411",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        }
+      ],
+      "references": [],
+      "superTypes": [
+        "3f8c70e2-2295-481b-a780-d6421bfa589f"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "6d94cce4-58c2-46db-87db-98f94500161e",
+      "name": "PauliProduct",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 50,
+        "y": 490
+      },
+      "attributes": [
+        {
+          "id": "c2965f0c-8418-475d-94e0-4d970a934d2c",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        }
+      ],
+      "references": [
+        {
+          "id": "e42360cf-9128-46f4-8dd3-3e21bcae5d2a",
+          "name": "terms",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "3f8c70e2-2295-481b-a780-d6421bfa589f",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 100
+          },
+          "containment": true,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [
+        "3f8c70e2-2295-481b-a780-d6421bfa589f"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "9e5d5ed9-9011-4d85-95a8-a33748a8265d",
+      "name": "Hamiltonian",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 330,
+        "y": 490
+      },
+      "attributes": [
+        {
+          "id": "5d9f3481-bccc-4bf8-b820-26cc3988ece4",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "aa64fa59-0e92-417e-9ada-4be025d98820",
+          "many": true,
+          "name": "coefficients",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [
+        {
+          "id": "f26b0516-a784-4b0e-afa0-dcaf7155ae72",
+          "name": "terms",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "3f8c70e2-2295-481b-a780-d6421bfa589f",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 100
+          },
+          "containment": true,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "f16f1788-02eb-4322-a644-7902ea2d3d4d",
+      "name": "MeasurementProcess",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 610,
+        "y": 490
+      },
+      "attributes": [
+        {
+          "id": "bc7bbbd9-a1f2-4eff-b755-10f53e67170d",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "cc17c017-4bcd-46c6-8119-77cdaa1d43ac",
+          "many": false,
+          "name": "numberOfShots",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "7a695b8c-91e2-4b20-b135-b25197bc7c8c",
+          "many": false,
+          "name": "basis",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [
+        {
+          "id": "ad438274-f505-4118-acda-ff696a9e045b",
+          "name": "hamiltonian",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "9e5d5ed9-9011-4d85-95a8-a33748a8265d",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 1
+          },
+          "containment": true,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "c9faa76d-cd03-4001-a86f-b1b4126c6929",
+      "name": "ExpectationValue",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 890,
+        "y": 490
+      },
+      "attributes": [
+        {
+          "id": "722f9057-2d39-4a85-a02b-a7c8717ff09c",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "b3dc03fe-bdc9-4820-ac3c-10a660b4d135",
+          "many": false,
+          "name": "value",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [
+        {
+          "id": "6fe9ff2d-d027-42ec-b206-93e8049dac9f",
+          "name": "measurementProcess",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "f16f1788-02eb-4322-a644-7902ea2d3d4d",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 1
+          },
+          "containment": true,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "8f21d643-a8e0-4bd0-a4e5-c7da4f83fadc",
+      "name": "Selector",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": true,
+      "position": {
+        "x": 1170,
+        "y": 490
+      },
+      "attributes": [
+        {
+          "id": "546cd256-8c49-4750-af97-dcb4b8c68d67",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        }
+      ],
+      "references": [],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "5a88e992-c364-461c-b1f0-8d4aa81ee511",
+      "name": "ElementSelector",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 50,
+        "y": 710
+      },
+      "attributes": [
+        {
+          "id": "11d1b56e-5e7f-48c9-87ba-15a1335394fb",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "88435842-dd0d-4809-a361-5000a2f36f78",
+          "many": false,
+          "name": "index",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [],
+      "superTypes": [
+        "8f21d643-a8e0-4bd0-a4e5-c7da4f83fadc"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "e4c5e88a-8264-4296-9f2b-0a512694fe4f",
+      "name": "RangeSelector",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 330,
+        "y": 710
+      },
+      "attributes": [
+        {
+          "id": "d2205559-6f27-430f-a9f0-4eb19b44cf6f",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "c839d47c-d575-4177-bd93-fe7fc1963d41",
+          "many": false,
+          "name": "begin",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "6fc3794d-2433-4439-b76e-80373556d672",
+          "many": false,
+          "name": "end",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [],
+      "superTypes": [
+        "8f21d643-a8e0-4bd0-a4e5-c7da4f83fadc"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "990b9a91-2f44-4e6c-8bc4-b121bbaf7d40",
+      "name": "QuantumOperation",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": true,
+      "position": {
+        "x": 610,
+        "y": 710
+      },
+      "attributes": [
+        {
+          "id": "5a981f57-b343-450f-a412-41d3f0663af1",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "dc0c5c00-4b17-472d-8353-d9e6c8e407f1",
+          "many": false,
+          "name": "inverse",
+          "type": "boolean",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "c10a1734-57be-406e-b5f4-8a43be6fb4e0",
+          "many": false,
+          "name": "controlled",
+          "type": "boolean",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [
+        {
+          "id": "a4b7decd-29d5-484d-bacf-b4ce7f070f75",
+          "name": "controlQubits",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "8f21d643-a8e0-4bd0-a4e5-c7da4f83fadc",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 100
+          },
+          "containment": true,
+          "allowSelfReference": true
+        },
+        {
+          "id": "280b7687-809d-489b-854a-66e744e3782b",
+          "name": "targetQubits",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "8f21d643-a8e0-4bd0-a4e5-c7da4f83fadc",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 100
+          },
+          "containment": true,
+          "allowSelfReference": true
+        },
+        {
+          "id": "a9c5893c-1d56-4789-a32e-fce0c382feb0",
+          "name": "classicBits",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "8f21d643-a8e0-4bd0-a4e5-c7da4f83fadc",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 100
+          },
+          "containment": true,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "632e3381-f92f-4693-a9b1-70eb5f8a5571",
+      "name": "Measurement",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 890,
+        "y": 710
+      },
+      "attributes": [
+        {
+          "id": "a66dbd15-3b8f-466c-9859-5c63e71083c0",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "14b5cd7e-be4e-4029-936e-779ccdf99f60",
+          "many": false,
+          "name": "basis",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [],
+      "superTypes": [
+        "990b9a91-2f44-4e6c-8bc4-b121bbaf7d40"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "573ba155-91a2-4f4c-b0e9-ff1f71f5c25c",
+      "name": "StatePreparation",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 1170,
+        "y": 710
+      },
+      "attributes": [
+        {
+          "id": "70d3c094-fe79-40bd-9f2f-17283ee8faa6",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "23fe0445-4aa6-4a2c-a5d4-c40893c361d8",
+          "many": false,
+          "name": "preparationType",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "d2e3f4a5-b6c7-8901-defa-234567890abc",
+          "many": false,
+          "name": "layerIndex",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": 0,
+          "documentation": "Index of the Layer this operation belongs to. Set from the parent Layer.index value. Used by codegen to filter operations per layer when iterating elementsByClassName."
+        }
+      ],
+      "references": [],
+      "superTypes": [
+        "990b9a91-2f44-4e6c-8bc4-b121bbaf7d40"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4",
+      "name": "ParameterizedGate",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 50,
+        "y": 930
+      },
+      "attributes": [
+        {
+          "id": "42b1f0a5-44dd-4066-a0fc-4807f50d57c8",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "d2e3f4a5-b6c7-8901-defa-234567890abc",
+          "many": false,
+          "name": "layerIndex",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": 0,
+          "documentation": "Index of the Layer this operation belongs to. Set from the parent Layer.index value. Used by codegen to filter operations per layer when iterating elementsByClassName."
+        }
+      ],
+      "references": [
+        {
+          "id": "97f94a30-d64c-4eb5-980a-2a65db86a79c",
+          "name": "parameterRef",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "eb53fb05-5988-4bc4-9fee-0df96cea2227",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 100
+          },
+          "containment": false,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [
+        "990b9a91-2f44-4e6c-8bc4-b121bbaf7d40"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "11a721b8-0b32-4be9-a7e8-b0937571e72a",
+      "name": "ElementaryQuantumGate",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 330,
+        "y": 930
+      },
+      "attributes": [
+        {
+          "id": "b97d25b7-ad01-41ba-b7d1-050ddf0845c5",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "d08678e9-47f0-4d59-bb76-14db9aef2b14",
+          "many": false,
+          "name": "gateType",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "cd8de3f8-73ed-472c-a0db-fdb7f295a16a",
+          "many": false,
+          "name": "theta",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "942d5509-f80c-46df-ba82-21443dffc3a0",
+          "many": false,
+          "name": "phi",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "069f6cca-a26c-4c6d-bc39-a496012321a0",
+          "many": false,
+          "name": "lambda",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "d2e3f4a5-b6c7-8901-defa-234567890abc",
+          "many": false,
+          "name": "layerIndex",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": 0,
+          "documentation": "Index of the Layer this operation belongs to. Set from the parent Layer.index value. Used by codegen to filter operations per layer when iterating elementsByClassName."
+        }
+      ],
+      "references": [],
+      "superTypes": [
+        "990b9a91-2f44-4e6c-8bc4-b121bbaf7d40"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "eb53fb05-5988-4bc4-9fee-0df96cea2227",
+      "name": "TrainableParameter",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 610,
+        "y": 930
+      },
+      "attributes": [
+        {
+          "id": "ed93b97c-f726-469b-9d6c-30b261b06297",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "ae62c6b9-8902-464d-9889-a6e39cbd8fad",
+          "many": false,
+          "name": "currentValue",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "52b9827e-104f-417a-b2e9-ddb5e30539a0",
+      "name": "QuantumRegister",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 890,
+        "y": 930
+      },
+      "attributes": [
+        {
+          "id": "7a9f5ca6-d5c0-4ebb-b270-d58ae18c29fc",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "3ae0e509-5080-4c0a-9c94-2c2b4eaf5e21",
+          "many": false,
+          "name": "numberOfQubits",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "c3a3c12e-9208-46a8-96bd-7d75b29fe8c3",
+      "name": "ClassicRegister",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 1170,
+        "y": 930
+      },
+      "attributes": [
+        {
+          "id": "9236fca1-831e-4784-9209-4c562fed811b",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "984baba6-a548-49c2-b4df-f149730f3c06",
+          "many": false,
+          "name": "numberOfBits",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        }
+      ],
+      "references": [],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "6fb01c9f-c560-440e-a542-56e5439e907b",
+      "name": "Layer",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 232.0293122886134,
+        "y": 1131.330326944758
+      },
+      "attributes": [
+        {
+          "id": "30baf7cf-b0ca-4156-b5ee-bbaf85ea976c",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "dd5efc6f-2c9e-42f8-a49c-a5b982157e23",
+          "many": false,
+          "name": "index",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false
+        },
+        {
+          "id": "c1d2e3f4-a5b6-7890-cdef-1234567890ab",
+          "many": false,
+          "name": "layerType",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": "Custom",
+          "documentation": "Discriminates the semantic role of the layer. One of: StatePreparation | Trainable | Entanglement | Custom. Used by codegen to emit operations in layer-declaration order rather than by gate class, ensuring the ansatz structure is faithfully reproduced."
+        }
+      ],
+      "references": [
+        {
+          "id": "be75ab60-de11-4054-84c8-b3e36e7e3e90",
+          "name": "operations",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "990b9a91-2f44-4e6c-8bc4-b121bbaf7d40",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 100
+          },
+          "containment": true,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "f2dbe662-94e7-4966-8965-99e6e0282712",
+      "name": "CompositeQuantumOperation",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 550.9244644870348,
+        "y": 1139.109357384442
+      },
+      "attributes": [
+        {
+          "id": "d078c93a-928e-4e0a-8dcd-2467dad34a97",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        }
+      ],
+      "references": [
+        {
+          "id": "6e0d9a64-40bd-421c-b619-2d4b21536cc2",
+          "name": "layers",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "6fb01c9f-c560-440e-a542-56e5439e907b",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 1,
+            "upperBound": 100
+          },
+          "containment": true,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [
+        "990b9a91-2f44-4e6c-8bc4-b121bbaf7d40"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "d6d3ef59-fb34-41bc-9ae6-df28caffe0a5",
+      "name": "QuantumCircuit",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 846.4825253664031,
+        "y": 1143.776775648252
+      },
+      "attributes": [
+        {
+          "id": "d240df84-c9bc-4090-b467-4f0f59abcfa2",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        }
+      ],
+      "references": [
+        {
+          "id": "4d6721d3-f85b-4b10-a806-49c552724e00",
+          "name": "quantumRegisters",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "52b9827e-104f-417a-b2e9-ddb5e30539a0",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 100
+          },
+          "containment": true,
+          "allowSelfReference": true
+        },
+        {
+          "id": "815175d7-2657-4ac2-b364-99f613a0185d",
+          "name": "classicRegisters",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "c3a3c12e-9208-46a8-96bd-7d75b29fe8c3",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 100
+          },
+          "containment": true,
+          "allowSelfReference": true
+        },
+        {
+          "id": "7e9fa36f-0488-4e84-b805-7f9d5d1b02ed",
+          "name": "compositeOperation",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "f2dbe662-94e7-4966-8965-99e6e0282712",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 1
+          },
+          "containment": true,
+          "allowSelfReference": true
+        },
+        {
+          "id": "f064bfae-b77c-44a9-9913-bd78d0bc6b85",
+          "name": "executionConfig",
+          "eClass": "f18712c7-fb6e-411b-89e6-050e8dfb653c",
+          "target": "2f75afc3-9350-4b62-a32c-fecdcc0970c9",
+          "attributes": [],
+          "cardinality": {
+            "lowerBound": 0,
+            "upperBound": 1
+          },
+          "containment": false,
+          "allowSelfReference": true
+        }
+      ],
+      "superTypes": [],
+      "constraints": []
+    },
+    {
+      "id": "2f75afc3-9350-4b62-a32c-fecdcc0970c9",
+      "name": "QuantumExecutionConfig",
+      "eClass": "53878be3-9d42-44c7-96cd-fec1b366e70b",
+      "abstract": false,
+      "position": {
+        "x": 1750,
+        "y": 50
+      },
+      "attributes": [
+        {
+          "id": "4297c610-123d-45d7-b0bd-0ae2be396734",
+          "many": false,
+          "name": "name",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": true,
+          "defaultValue": ""
+        },
+        {
+          "id": "cc384fd0-e266-46c1-8dbc-653d0c41c76b",
+          "many": false,
+          "name": "backendName",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": "lightning.qubit",
+          "documentation": "Quantum device/backend identifier used by the generated runtime."
+        },
+        {
+          "id": "95e78681-78e9-4796-9d89-78294b0be1b3",
+          "many": false,
+          "name": "interface",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": "jax",
+          "documentation": "Autodiff interface used by the generated runtime."
+        },
+        {
+          "id": "3c2b10eb-1e96-40d3-a357-9fed8710258b",
+          "many": false,
+          "name": "diffMethod",
+          "type": "string",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": "adjoint",
+          "documentation": "Differentiation method used by the generated runtime."
+        },
+        {
+          "id": "d9598465-0cb2-4618-bf1d-ea35e899942b",
+          "many": false,
+          "name": "seed",
+          "type": "number",
+          "eClass": "3fb0f71e-0335-4f2f-9973-2fc29f9e9570",
+          "required": false,
+          "defaultValue": 42
+        }
+      ],
+      "references": [],
+      "superTypes": [],
+      "constraints": []
+    }
+  ],
+  "constraints": [],
+  "conformsTo": "d961eca2-da4a-40a6-b95e-a20315567ce5",
+  "isOwner": true
+}

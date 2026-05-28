@@ -1,0 +1,15 @@
+[project]
+name = "fraud"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "jax>=0.10.1",
+    "jaxlib>=0.10.1",
+    "matplotlib>=3.10.9",
+    "optax>=0.2.8",
+    "pandas>=3.0.3",
+    "pennylane>=0.45.0",
+    "scikit-learn>=1.8.0",
+]

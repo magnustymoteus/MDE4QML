@@ -1,0 +1,4170 @@
+{
+  "id": "9105c913-6272-4634-8eea-ce4f623bddf6",
+  "name": "creditcard_fraud_classifier_like_main_py",
+  "metamodelId": "f8f0d811-3a2f-4620-8e14-a9dc4e14178f",
+  "elements": [
+    {
+      "id": "c4f26970-56f6-481e-be6f-f1b986db8d65",
+      "style": {
+        "name": "creditcard_truncated_15000",
+        "labels": [
+          "Class"
+        ],
+        "features": [
+          "Time",
+          "V1",
+          "V2",
+          "V3",
+          "V4",
+          "V5",
+          "V6",
+          "V7",
+          "V8",
+          "V9",
+          "V10",
+          "V11",
+          "V12",
+          "V13",
+          "V14",
+          "V15",
+          "V16",
+          "V17",
+          "V18",
+          "V19",
+          "V20",
+          "V21",
+          "V22",
+          "V23",
+          "V24",
+          "V25",
+          "V26",
+          "V27",
+          "V28",
+          "Amount"
+        ],
+        "position": {
+          "x": 40,
+          "y": 40
+        }
+      },
+      "references": {},
+      "modelElementId": "0f07b12d-a10e-46a8-866f-26d722890c49"
+    },
+    {
+      "id": "6eb9ad57-4b34-45e9-b548-d79a9fdd47e2",
+      "style": {
+        "name": "preprocessing_pipeline",
+        "outputDimension": 8,
+        "position": {
+          "x": 260,
+          "y": 40
+        }
+      },
+      "references": {
+        "dataset": [
+          "c4f26970-56f6-481e-be6f-f1b986db8d65"
+        ],
+        "steps": [
+          "692b51de-51ae-465c-8f6a-911713bce0a3",
+          "1c8348cb-035a-4034-9473-9157f83aa92a"
+        ]
+      },
+      "modelElementId": "034581da-57ec-44fb-9601-5cda35091c64"
+    },
+    {
+      "id": "692b51de-51ae-465c-8f6a-911713bce0a3",
+      "style": {
+        "name": "standard_scaler",
+        "stepType": "StandardScaler",
+        "enabled": true,
+        "config": "with_mean=true,with_std=true",
+        "position": {
+          "x": 260,
+          "y": 140
+        }
+      },
+      "references": {},
+      "modelElementId": "cb2c6abd-74c5-46ac-a396-02849bf1c682"
+    },
+    {
+      "id": "1c8348cb-035a-4034-9473-9157f83aa92a",
+      "style": {
+        "name": "pca_8",
+        "stepType": "PCA",
+        "enabled": true,
+        "config": "n_components=8,random_state=42",
+        "position": {
+          "x": 260,
+          "y": 240
+        }
+      },
+      "references": {},
+      "modelElementId": "ce0f385f-4fef-4c8e-97b1-6bff85805f76"
+    },
+    {
+      "id": "546e4e3c-0dbf-46de-8e1d-15515c4a07ec",
+      "style": {
+        "name": "angle_embedding",
+        "embeddingType": "AngleEmbedding",
+        "position": {
+          "x": 480,
+          "y": 40
+        }
+      },
+      "references": {
+        "dataset": [
+          "c4f26970-56f6-481e-be6f-f1b986db8d65"
+        ],
+        "preprocessingPipeline": [
+          "6eb9ad57-4b34-45e9-b548-d79a9fdd47e2"
+        ]
+      },
+      "modelElementId": "43d9b2de-e3b9-45be-b04a-1d34bf815863"
+    },
+    {
+      "id": "ba08fcfd-a4db-44e3-95d1-4934ac79b655",
+      "style": {
+        "name": "adam",
+        "learningRate": 0.005,
+        "maxIterations": 30,
+        "optimizerType": "Adam",
+        "position": {
+          "x": 480,
+          "y": 40
+        },
+        "batchSize": 256
+      },
+      "references": {},
+      "modelElementId": "040e97d7-9214-49f9-95f4-1866e90471f6"
+    },
+    {
+      "id": "6c3c6c64-237c-4110-bbb1-0ea4592326f7",
+      "style": {
+        "name": "weighted_bce",
+        "function": "BinaryCrossEntropy",
+        "minimization": true,
+        "currentValue": 0,
+        "position": {
+          "x": 700,
+          "y": 40
+        },
+        "positiveClassWeight": 2.0
+      },
+      "references": {},
+      "modelElementId": "491f1035-1fd5-43bc-a9f2-c3212c17cf15"
+    },
+    {
+      "id": "a8ccc868-44e2-412f-b9c0-9b95a5feb60c",
+      "style": {
+        "name": "prediction",
+        "postprocessingMethod": "Threshold",
+        "threshold": 0.4,
+        "predictedValue": 0,
+        "position": {
+          "x": 920,
+          "y": 40
+        },
+        "outputScale": 0.5,
+        "outputShift": 0.5
+      },
+      "references": {
+        "lossFunction": [
+          "6c3c6c64-237c-4110-bbb1-0ea4592326f7"
+        ]
+      },
+      "modelElementId": "2f87d63f-c7ba-4f3e-ab9e-5272cb8446cf"
+    },
+    {
+      "id": "94af3e01-0867-488b-bdfd-4f06c8d6ec04",
+      "style": {
+        "name": "creditcard_fraud_classifier_task",
+        "taskType": "classification",
+        "position": {
+          "x": 1140,
+          "y": 40
+        }
+      },
+      "references": {
+        "prediction": [
+          "a8ccc868-44e2-412f-b9c0-9b95a5feb60c"
+        ]
+      },
+      "modelElementId": "96f81ad8-e62f-4eea-8b14-8895dd7e0da6"
+    },
+    {
+      "id": "a76b76ce-0732-4fb6-8828-799c8ad2c942",
+      "style": {
+        "name": "z0_hamiltonian",
+        "coefficients": [
+          1
+        ],
+        "position": {
+          "x": 260,
+          "y": 260
+        }
+      },
+      "references": {
+        "terms": [
+          "1b302031-2a22-4ea9-8c28-2e4756ecf04a"
+        ]
+      },
+      "modelElementId": "9e5d5ed9-9011-4d85-95a8-a33748a8265d"
+    },
+    {
+      "id": "1b302031-2a22-4ea9-8c28-2e4756ecf04a",
+      "style": {
+        "name": "PauliZ_q0",
+        "qubits": [
+          0
+        ],
+        "position": {
+          "x": 40,
+          "y": 260
+        }
+      },
+      "references": {},
+      "modelElementId": "8c26d657-7841-4756-91f0-b9260560f7f6"
+    },
+    {
+      "id": "23ebfb53-6a92-4f19-bca3-6b57d65181cb",
+      "style": {
+        "name": "measurement_process",
+        "basis": "Z",
+        "numberOfShots": 1000,
+        "position": {
+          "x": 480,
+          "y": 260
+        }
+      },
+      "references": {
+        "hamiltonian": [
+          "a76b76ce-0732-4fb6-8828-799c8ad2c942"
+        ]
+      },
+      "modelElementId": "f16f1788-02eb-4322-a644-7902ea2d3d4d"
+    },
+    {
+      "id": "79e1f974-094a-408d-9800-d2b70b8890f8",
+      "style": {
+        "name": "expectation",
+        "value": 0,
+        "position": {
+          "x": 700,
+          "y": 260
+        }
+      },
+      "references": {
+        "measurementProcess": [
+          "23ebfb53-6a92-4f19-bca3-6b57d65181cb"
+        ]
+      },
+      "modelElementId": "c9faa76d-cd03-4001-a86f-b1b4126c6929"
+    },
+    {
+      "id": "2290872f-5e29-4630-8bd7-9a4629b61b57",
+      "style": {
+        "name": "q",
+        "numberOfQubits": 8,
+        "position": {
+          "x": 40,
+          "y": 500
+        }
+      },
+      "references": {},
+      "modelElementId": "52b9827e-104f-417a-b2e9-ddb5e30539a0"
+    },
+    {
+      "id": "4e5173cf-c0b7-421f-a6e3-0e8047d64b59",
+      "style": {
+        "name": "strongly_entangling_ansatz",
+        "inverse": false,
+        "controlled": false,
+        "position": {
+          "x": 500,
+          "y": 500
+        }
+      },
+      "references": {
+        "layers": [
+          "221eb380-0f0b-40a2-bedd-9b9b0923d5aa",
+          "254278be-dbe9-4d08-8161-b8cca35f5451",
+          "076cbfb9-8bf0-4e20-9f88-c9578be59f21",
+          "fb4703e3-d9c2-43d8-8a1d-5167e9cf4541",
+          "d797baf8-5947-4b3e-8dba-85f1e6939a63"
+        ]
+      },
+      "modelElementId": "f2dbe662-94e7-4966-8965-99e6e0282712"
+    },
+    {
+      "id": "221eb380-0f0b-40a2-bedd-9b9b0923d5aa",
+      "style": {
+        "name": "trainable_layer_0",
+        "index": 0,
+        "layerType": "Trainable",
+        "position": {
+          "x": 760,
+          "y": 820
+        }
+      },
+      "references": {
+        "operations": [
+          "ba6402bd-fb62-4c7c-90f9-60cf3b34e4f0",
+          "203f4f0b-7df0-481e-ac2e-dd78392b3f86",
+          "f4cc4559-e152-40b3-8733-6d59eed71ecd",
+          "b3e6af91-1570-4a9a-be42-53123b612e8b",
+          "3bcfcc6c-02bb-4f11-8b36-0de6ed11c35a",
+          "81eff9fd-3bf0-4af1-a05e-170cb4a4308d",
+          "0d79cad5-e5b2-4dd0-8799-1ac155571012",
+          "978983fe-386e-4808-944b-68ca5de24c3d",
+          "e17af3c1-72b9-4a21-ac1b-73d774e23156",
+          "c0295174-2470-4d2c-bb2e-3be8f601679f",
+          "d11c1820-7282-4d9f-b239-22931a27f362",
+          "ed2bda29-34f8-4499-96e5-5c08dc9f07a5",
+          "25fbb61d-3aed-473a-b800-5800c56c0243",
+          "4c3deb39-7fe7-45dc-a295-233504239773",
+          "c919b132-6e48-4f30-b326-7008a0285b4c",
+          "38b3230c-1174-4bbe-9fa7-1623ffd21375"
+        ]
+      },
+      "modelElementId": "6fb01c9f-c560-440e-a542-56e5439e907b"
+    },
+    {
+      "id": "c0d1579f-64c7-4d82-9436-0ba0c4b2cc94",
+      "style": {
+        "name": "theta_l0_q0_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 980
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "01ecf618-0ce7-468a-91e0-b3c43ea81894",
+      "style": {
+        "name": "theta_l0_q0_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 1000
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "fcfa13d4-c6e2-41ae-a9f8-6a639c1434e5",
+      "style": {
+        "name": "theta_l0_q0_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 1020
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ba6402bd-fb62-4c7c-90f9-60cf3b34e4f0",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 0,
+        "position": {
+          "x": 40,
+          "y": 900
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "c0d1579f-64c7-4d82-9436-0ba0c4b2cc94",
+          "01ecf618-0ce7-468a-91e0-b3c43ea81894",
+          "fcfa13d4-c6e2-41ae-a9f8-6a639c1434e5"
+        ],
+        "targetQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "b5f9e5b8-c064-4313-b06b-396de03b674a",
+      "style": {
+        "name": "theta_l0_q1_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 980
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "9770aab6-ae15-4dd6-bbc3-60f7ec7c1a4b",
+      "style": {
+        "name": "theta_l0_q1_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 1000
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "9713b584-ef0e-4258-a3e7-c4096cfc167e",
+      "style": {
+        "name": "theta_l0_q1_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 1020
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "203f4f0b-7df0-481e-ac2e-dd78392b3f86",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 0,
+        "position": {
+          "x": 160,
+          "y": 900
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "b5f9e5b8-c064-4313-b06b-396de03b674a",
+          "9770aab6-ae15-4dd6-bbc3-60f7ec7c1a4b",
+          "9713b584-ef0e-4258-a3e7-c4096cfc167e"
+        ],
+        "targetQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "3e7ecac7-d136-4d5e-9e58-ba9c951e653f",
+      "style": {
+        "name": "theta_l0_q2_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 980
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "77b2acc2-d707-48f8-a323-e80a3bf4c88d",
+      "style": {
+        "name": "theta_l0_q2_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 1000
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "287e3d02-280d-47d6-9d50-ed263b3f9c9c",
+      "style": {
+        "name": "theta_l0_q2_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 1020
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "f4cc4559-e152-40b3-8733-6d59eed71ecd",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 0,
+        "position": {
+          "x": 280,
+          "y": 900
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "3e7ecac7-d136-4d5e-9e58-ba9c951e653f",
+          "77b2acc2-d707-48f8-a323-e80a3bf4c88d",
+          "287e3d02-280d-47d6-9d50-ed263b3f9c9c"
+        ],
+        "targetQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "21b83ca5-0a28-4fb4-9d09-be0f999a6dea",
+      "style": {
+        "name": "theta_l0_q3_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 980
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "dd9abde5-3268-4969-9638-3a204319d8db",
+      "style": {
+        "name": "theta_l0_q3_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 1000
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "18c02006-e158-46e6-bf5d-0cb525efdbf7",
+      "style": {
+        "name": "theta_l0_q3_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 1020
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "b3e6af91-1570-4a9a-be42-53123b612e8b",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 0,
+        "position": {
+          "x": 400,
+          "y": 900
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "21b83ca5-0a28-4fb4-9d09-be0f999a6dea",
+          "dd9abde5-3268-4969-9638-3a204319d8db",
+          "18c02006-e158-46e6-bf5d-0cb525efdbf7"
+        ],
+        "targetQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "d6c19a8c-e6d1-4b62-b8a9-e9bcae53db58",
+      "style": {
+        "name": "theta_l0_q4_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 980
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "9edc0857-8761-4fe6-b5ea-87ae7a9ad4be",
+      "style": {
+        "name": "theta_l0_q4_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 1000
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "906f488b-5238-418c-954b-10ae0af7426e",
+      "style": {
+        "name": "theta_l0_q4_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 1020
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "3bcfcc6c-02bb-4f11-8b36-0de6ed11c35a",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 0,
+        "position": {
+          "x": 520,
+          "y": 900
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "d6c19a8c-e6d1-4b62-b8a9-e9bcae53db58",
+          "9edc0857-8761-4fe6-b5ea-87ae7a9ad4be",
+          "906f488b-5238-418c-954b-10ae0af7426e"
+        ],
+        "targetQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "5ddc86ed-7f1f-49e9-af05-7aa99c6ac7d0",
+      "style": {
+        "name": "theta_l0_q5_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 980
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "663575c3-d8bc-43ee-95a8-94cfba549735",
+      "style": {
+        "name": "theta_l0_q5_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 1000
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ecd04a67-1149-429e-b4b3-9b9dc2251222",
+      "style": {
+        "name": "theta_l0_q5_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 1020
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "81eff9fd-3bf0-4af1-a05e-170cb4a4308d",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 0,
+        "position": {
+          "x": 640,
+          "y": 900
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "5ddc86ed-7f1f-49e9-af05-7aa99c6ac7d0",
+          "663575c3-d8bc-43ee-95a8-94cfba549735",
+          "ecd04a67-1149-429e-b4b3-9b9dc2251222"
+        ],
+        "targetQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "9991b4bf-9040-4ae8-a49b-54ecc250c96f",
+      "style": {
+        "name": "theta_l0_q6_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 980
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "4f91c6fd-7676-43dd-854e-99efba018ea4",
+      "style": {
+        "name": "theta_l0_q6_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 1000
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "4383ece1-3216-4264-b7eb-9e2c51ef2731",
+      "style": {
+        "name": "theta_l0_q6_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 1020
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "0d79cad5-e5b2-4dd0-8799-1ac155571012",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 0,
+        "position": {
+          "x": 760,
+          "y": 900
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "9991b4bf-9040-4ae8-a49b-54ecc250c96f",
+          "4f91c6fd-7676-43dd-854e-99efba018ea4",
+          "4383ece1-3216-4264-b7eb-9e2c51ef2731"
+        ],
+        "targetQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "df542d76-ebc8-41c8-98ec-6ec14e93dff7",
+      "style": {
+        "name": "theta_l0_q7_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 980
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "d3375f4c-2508-4f09-9e3c-1b38bee930d7",
+      "style": {
+        "name": "theta_l0_q7_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 1000
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "6f64bad1-459e-4e59-924a-0397987c7e43",
+      "style": {
+        "name": "theta_l0_q7_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 1020
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "978983fe-386e-4808-944b-68ca5de24c3d",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 0,
+        "position": {
+          "x": 880,
+          "y": 900
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "df542d76-ebc8-41c8-98ec-6ec14e93dff7",
+          "d3375f4c-2508-4f09-9e3c-1b38bee930d7",
+          "6f64bad1-459e-4e59-924a-0397987c7e43"
+        ],
+        "targetQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "e17af3c1-72b9-4a21-ac1b-73d774e23156",
+      "style": {
+        "name": "CNOT_0_1",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 0,
+        "position": {
+          "x": 40,
+          "y": 1060
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ],
+        "targetQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "c0295174-2470-4d2c-bb2e-3be8f601679f",
+      "style": {
+        "name": "CNOT_1_2",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 0,
+        "position": {
+          "x": 160,
+          "y": 1060
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ],
+        "targetQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "d11c1820-7282-4d9f-b239-22931a27f362",
+      "style": {
+        "name": "CNOT_2_3",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 0,
+        "position": {
+          "x": 280,
+          "y": 1060
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ],
+        "targetQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "ed2bda29-34f8-4499-96e5-5c08dc9f07a5",
+      "style": {
+        "name": "CNOT_3_4",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 0,
+        "position": {
+          "x": 400,
+          "y": 1060
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ],
+        "targetQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "25fbb61d-3aed-473a-b800-5800c56c0243",
+      "style": {
+        "name": "CNOT_4_5",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 0,
+        "position": {
+          "x": 520,
+          "y": 1060
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ],
+        "targetQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "4c3deb39-7fe7-45dc-a295-233504239773",
+      "style": {
+        "name": "CNOT_5_6",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 0,
+        "position": {
+          "x": 640,
+          "y": 1060
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ],
+        "targetQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "c919b132-6e48-4f30-b326-7008a0285b4c",
+      "style": {
+        "name": "CNOT_6_7",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 0,
+        "position": {
+          "x": 760,
+          "y": 1060
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ],
+        "targetQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "38b3230c-1174-4bbe-9fa7-1623ffd21375",
+      "style": {
+        "name": "CNOT_7_0",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 0,
+        "position": {
+          "x": 880,
+          "y": 1060
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ],
+        "targetQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "254278be-dbe9-4d08-8161-b8cca35f5451",
+      "style": {
+        "name": "trainable_layer_1",
+        "index": 1,
+        "layerType": "Trainable",
+        "position": {
+          "x": 980,
+          "y": 1260
+        }
+      },
+      "references": {
+        "operations": [
+          "e7808829-3962-479e-bd01-4d4194610305",
+          "5826b67f-2fab-4874-8fc1-1292b1266d8a",
+          "941255e0-3d11-4be2-9132-f80670f93ff3",
+          "a7cd9199-42be-4a0a-9c29-a3f45d11cc66",
+          "6c371f73-c9a0-4597-967c-4d6b96fa10d2",
+          "eec8d187-bff0-4afb-b593-4663d163288a",
+          "07bbfcb0-6576-473c-9441-acb67d82e6d0",
+          "2bb141cc-902a-4167-97a7-1c389590cb31",
+          "89d199ca-21ed-4d31-9e09-65eeeca7fbfd",
+          "aea5d5ea-c07f-4401-8563-809a7fcce1a4",
+          "c4bd3694-c7c1-435d-b100-33983119d9d6",
+          "b82cdb72-baf7-4de7-9f10-df979348f883",
+          "f6a64b67-4032-4eaf-a01e-134662955ac8",
+          "5b28d2e4-3d8e-438d-a882-f959b0c404ad",
+          "0f920abf-7141-4d86-aef2-a5786db4037c",
+          "ec3b5ad3-a82e-4ebe-b8ac-975431af2fe2"
+        ]
+      },
+      "modelElementId": "6fb01c9f-c560-440e-a542-56e5439e907b"
+    },
+    {
+      "id": "9cbcf5e1-c829-470e-baaf-80ae275ca08e",
+      "style": {
+        "name": "theta_l1_q0_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 1420
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "113628d9-b0cd-4b5c-98eb-4f723a3c696d",
+      "style": {
+        "name": "theta_l1_q0_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 1440
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "207e2d8f-e6e2-4c41-98d3-85194332390e",
+      "style": {
+        "name": "theta_l1_q0_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 1460
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "e7808829-3962-479e-bd01-4d4194610305",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 1,
+        "position": {
+          "x": 40,
+          "y": 1340
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "9cbcf5e1-c829-470e-baaf-80ae275ca08e",
+          "113628d9-b0cd-4b5c-98eb-4f723a3c696d",
+          "207e2d8f-e6e2-4c41-98d3-85194332390e"
+        ],
+        "targetQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "261c1990-42fe-41af-bc39-e0eb29014633",
+      "style": {
+        "name": "theta_l1_q1_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 1420
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "6a81307e-5231-47c0-91f0-bddcc4752560",
+      "style": {
+        "name": "theta_l1_q1_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 1440
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "65c4742d-d582-40df-bc74-6f2ba379536e",
+      "style": {
+        "name": "theta_l1_q1_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 1460
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "5826b67f-2fab-4874-8fc1-1292b1266d8a",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 1,
+        "position": {
+          "x": 160,
+          "y": 1340
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "261c1990-42fe-41af-bc39-e0eb29014633",
+          "6a81307e-5231-47c0-91f0-bddcc4752560",
+          "65c4742d-d582-40df-bc74-6f2ba379536e"
+        ],
+        "targetQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "d5aaad19-2f86-4d02-8639-bddf6b39aa57",
+      "style": {
+        "name": "theta_l1_q2_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 1420
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "a175057e-5e34-4349-9e09-7a8fda294282",
+      "style": {
+        "name": "theta_l1_q2_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 1440
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "8672c2ce-d0e1-4dcd-b29a-96503f6a09a2",
+      "style": {
+        "name": "theta_l1_q2_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 1460
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "941255e0-3d11-4be2-9132-f80670f93ff3",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 1,
+        "position": {
+          "x": 280,
+          "y": 1340
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "d5aaad19-2f86-4d02-8639-bddf6b39aa57",
+          "a175057e-5e34-4349-9e09-7a8fda294282",
+          "8672c2ce-d0e1-4dcd-b29a-96503f6a09a2"
+        ],
+        "targetQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "143a57df-53be-4f73-a178-9b1dada5e939",
+      "style": {
+        "name": "theta_l1_q3_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 1420
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "993ee27b-146c-4b82-97ab-5bca2fe6a427",
+      "style": {
+        "name": "theta_l1_q3_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 1440
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "591a8212-200b-4d88-ac92-768b77b41253",
+      "style": {
+        "name": "theta_l1_q3_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 1460
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "a7cd9199-42be-4a0a-9c29-a3f45d11cc66",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 1,
+        "position": {
+          "x": 400,
+          "y": 1340
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "143a57df-53be-4f73-a178-9b1dada5e939",
+          "993ee27b-146c-4b82-97ab-5bca2fe6a427",
+          "591a8212-200b-4d88-ac92-768b77b41253"
+        ],
+        "targetQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "cb34b3cb-2ce1-445a-844c-7b588c56e162",
+      "style": {
+        "name": "theta_l1_q4_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 1420
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "2f4b1a50-82d4-4dff-ad6c-562b20f5c92b",
+      "style": {
+        "name": "theta_l1_q4_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 1440
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ac472f1c-d6e0-4dd5-8e26-3d8271667fbc",
+      "style": {
+        "name": "theta_l1_q4_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 1460
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "6c371f73-c9a0-4597-967c-4d6b96fa10d2",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 1,
+        "position": {
+          "x": 520,
+          "y": 1340
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "cb34b3cb-2ce1-445a-844c-7b588c56e162",
+          "2f4b1a50-82d4-4dff-ad6c-562b20f5c92b",
+          "ac472f1c-d6e0-4dd5-8e26-3d8271667fbc"
+        ],
+        "targetQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "4bd821f3-9fe6-4eb1-8eaa-981df61b1b23",
+      "style": {
+        "name": "theta_l1_q5_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 1420
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ac50d335-11fa-475b-8036-5944ec078656",
+      "style": {
+        "name": "theta_l1_q5_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 1440
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "4c23f168-d7f3-4e08-a56b-6a8c60fd7803",
+      "style": {
+        "name": "theta_l1_q5_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 1460
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "eec8d187-bff0-4afb-b593-4663d163288a",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 1,
+        "position": {
+          "x": 640,
+          "y": 1340
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "4bd821f3-9fe6-4eb1-8eaa-981df61b1b23",
+          "ac50d335-11fa-475b-8036-5944ec078656",
+          "4c23f168-d7f3-4e08-a56b-6a8c60fd7803"
+        ],
+        "targetQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "2f6db785-cda3-4ff5-9ec2-5839e4e4223f",
+      "style": {
+        "name": "theta_l1_q6_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 1420
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "5a374112-3eff-4f81-a68c-62989df8208f",
+      "style": {
+        "name": "theta_l1_q6_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 1440
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "a4c6e360-7d34-4bfc-9b2a-695cc5e6f59a",
+      "style": {
+        "name": "theta_l1_q6_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 1460
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "07bbfcb0-6576-473c-9441-acb67d82e6d0",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 1,
+        "position": {
+          "x": 760,
+          "y": 1340
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "2f6db785-cda3-4ff5-9ec2-5839e4e4223f",
+          "5a374112-3eff-4f81-a68c-62989df8208f",
+          "a4c6e360-7d34-4bfc-9b2a-695cc5e6f59a"
+        ],
+        "targetQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "8c978ad7-d739-41a4-bcb6-e87eeaf4a528",
+      "style": {
+        "name": "theta_l1_q7_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 1420
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "f64ce6b9-6936-4bd2-bcab-f914ef43d3d4",
+      "style": {
+        "name": "theta_l1_q7_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 1440
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "30acb4d2-ee7a-4bcd-85bc-9f8f9949ef77",
+      "style": {
+        "name": "theta_l1_q7_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 1460
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "2bb141cc-902a-4167-97a7-1c389590cb31",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 1,
+        "position": {
+          "x": 880,
+          "y": 1340
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "8c978ad7-d739-41a4-bcb6-e87eeaf4a528",
+          "f64ce6b9-6936-4bd2-bcab-f914ef43d3d4",
+          "30acb4d2-ee7a-4bcd-85bc-9f8f9949ef77"
+        ],
+        "targetQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "89d199ca-21ed-4d31-9e09-65eeeca7fbfd",
+      "style": {
+        "name": "CNOT_0_1",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 1,
+        "position": {
+          "x": 40,
+          "y": 1500
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ],
+        "targetQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "aea5d5ea-c07f-4401-8563-809a7fcce1a4",
+      "style": {
+        "name": "CNOT_1_2",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 1,
+        "position": {
+          "x": 160,
+          "y": 1500
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ],
+        "targetQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "c4bd3694-c7c1-435d-b100-33983119d9d6",
+      "style": {
+        "name": "CNOT_2_3",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 1,
+        "position": {
+          "x": 280,
+          "y": 1500
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ],
+        "targetQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "b82cdb72-baf7-4de7-9f10-df979348f883",
+      "style": {
+        "name": "CNOT_3_4",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 1,
+        "position": {
+          "x": 400,
+          "y": 1500
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ],
+        "targetQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "f6a64b67-4032-4eaf-a01e-134662955ac8",
+      "style": {
+        "name": "CNOT_4_5",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 1,
+        "position": {
+          "x": 520,
+          "y": 1500
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ],
+        "targetQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "5b28d2e4-3d8e-438d-a882-f959b0c404ad",
+      "style": {
+        "name": "CNOT_5_6",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 1,
+        "position": {
+          "x": 640,
+          "y": 1500
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ],
+        "targetQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "0f920abf-7141-4d86-aef2-a5786db4037c",
+      "style": {
+        "name": "CNOT_6_7",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 1,
+        "position": {
+          "x": 760,
+          "y": 1500
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ],
+        "targetQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "ec3b5ad3-a82e-4ebe-b8ac-975431af2fe2",
+      "style": {
+        "name": "CNOT_7_0",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 1,
+        "position": {
+          "x": 880,
+          "y": 1500
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ],
+        "targetQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "076cbfb9-8bf0-4e20-9f88-c9578be59f21",
+      "style": {
+        "name": "trainable_layer_2",
+        "index": 2,
+        "layerType": "Trainable",
+        "position": {
+          "x": 760,
+          "y": 1700
+        }
+      },
+      "references": {
+        "operations": [
+          "9d6e4070-46fc-4b62-a30b-e0761187b77b",
+          "d3cbcf04-36fa-49ac-a30f-7417bc8d598f",
+          "7f342cc0-d188-4c76-851e-8006fd7948a0",
+          "7c22e1bf-6219-4a38-a1fd-b7741a4308a9",
+          "9ed6650d-2932-4cdc-8e66-59b1edd50701",
+          "c205cf6e-a3c4-4fa7-bad9-edfecf9cc8fd",
+          "3a92568d-36e3-4471-b995-12fcb2006f7e",
+          "33afda9f-b2d4-4ed8-bf0a-97bdff3b290f",
+          "63c9b156-3182-4466-b0a9-c4c5ecaf89d2",
+          "2e37f176-c5c0-4433-b7b2-3d73c455639a",
+          "0c41d354-128b-4e95-af57-c4f8f5fa81ec",
+          "c5fbf60d-95ee-4a63-8a38-0fa64d2d39b8",
+          "a1ab7d1d-ed20-47ed-8b41-c5480ddd724d",
+          "21df10eb-2471-4cb6-bea2-1233d0403e3c",
+          "b5f967cb-fe10-4fc1-95a5-abb3549704c7",
+          "9781d2a6-6456-4363-a4ea-912c9ba8a377"
+        ]
+      },
+      "modelElementId": "6fb01c9f-c560-440e-a542-56e5439e907b"
+    },
+    {
+      "id": "737031b2-ddb1-4a02-8dc8-2e6868cdcf35",
+      "style": {
+        "name": "theta_l2_q0_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 1860
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "59f7df5f-b7e1-4d81-9a61-72aca5316e82",
+      "style": {
+        "name": "theta_l2_q0_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 1880
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "816dc2a8-bf9a-4a9c-a136-041ffb410c95",
+      "style": {
+        "name": "theta_l2_q0_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 1900
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "9d6e4070-46fc-4b62-a30b-e0761187b77b",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 2,
+        "position": {
+          "x": 40,
+          "y": 1780
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "737031b2-ddb1-4a02-8dc8-2e6868cdcf35",
+          "59f7df5f-b7e1-4d81-9a61-72aca5316e82",
+          "816dc2a8-bf9a-4a9c-a136-041ffb410c95"
+        ],
+        "targetQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "d36b8e7b-cd5e-4a09-8eb6-b1e30ff067b8",
+      "style": {
+        "name": "theta_l2_q1_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 1860
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "d2277f33-9cf8-44eb-92c4-f5283a659afa",
+      "style": {
+        "name": "theta_l2_q1_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 1880
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "eb729437-71ca-496e-af09-ab1ac3fd93ef",
+      "style": {
+        "name": "theta_l2_q1_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 1900
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "d3cbcf04-36fa-49ac-a30f-7417bc8d598f",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 2,
+        "position": {
+          "x": 160,
+          "y": 1780
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "d36b8e7b-cd5e-4a09-8eb6-b1e30ff067b8",
+          "d2277f33-9cf8-44eb-92c4-f5283a659afa",
+          "eb729437-71ca-496e-af09-ab1ac3fd93ef"
+        ],
+        "targetQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "394a067a-a20f-46bf-b967-233d414809ca",
+      "style": {
+        "name": "theta_l2_q2_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 1860
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "5399d0fd-38f8-4bf1-a532-e855f80401eb",
+      "style": {
+        "name": "theta_l2_q2_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 1880
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "9b93a239-4359-45b3-941d-05c63014cbce",
+      "style": {
+        "name": "theta_l2_q2_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 1900
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "7f342cc0-d188-4c76-851e-8006fd7948a0",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 2,
+        "position": {
+          "x": 280,
+          "y": 1780
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "394a067a-a20f-46bf-b967-233d414809ca",
+          "5399d0fd-38f8-4bf1-a532-e855f80401eb",
+          "9b93a239-4359-45b3-941d-05c63014cbce"
+        ],
+        "targetQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "980eef57-47c5-41cc-9fd6-c8d078117c7c",
+      "style": {
+        "name": "theta_l2_q3_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 1860
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ceeeb224-324d-4ef2-b80f-48bec51ec553",
+      "style": {
+        "name": "theta_l2_q3_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 1880
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "e57e1d36-5917-4bc3-a1d2-3562358ee476",
+      "style": {
+        "name": "theta_l2_q3_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 1900
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "7c22e1bf-6219-4a38-a1fd-b7741a4308a9",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 2,
+        "position": {
+          "x": 400,
+          "y": 1780
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "980eef57-47c5-41cc-9fd6-c8d078117c7c",
+          "ceeeb224-324d-4ef2-b80f-48bec51ec553",
+          "e57e1d36-5917-4bc3-a1d2-3562358ee476"
+        ],
+        "targetQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "d6c03e7f-f7e5-4642-a5f6-a45af1bb0392",
+      "style": {
+        "name": "theta_l2_q4_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 1860
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ca316bbf-8d09-4b8f-8793-ab6ee9609d7a",
+      "style": {
+        "name": "theta_l2_q4_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 1880
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "012e84c3-28c6-47dd-a1dc-b9a5e7b175ff",
+      "style": {
+        "name": "theta_l2_q4_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 1900
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "9ed6650d-2932-4cdc-8e66-59b1edd50701",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 2,
+        "position": {
+          "x": 520,
+          "y": 1780
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "d6c03e7f-f7e5-4642-a5f6-a45af1bb0392",
+          "ca316bbf-8d09-4b8f-8793-ab6ee9609d7a",
+          "012e84c3-28c6-47dd-a1dc-b9a5e7b175ff"
+        ],
+        "targetQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "b107e8a1-5c9d-4600-839b-770f4f264604",
+      "style": {
+        "name": "theta_l2_q5_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 1860
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "0e45470c-2668-44ec-9845-e54c21416c35",
+      "style": {
+        "name": "theta_l2_q5_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 1880
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "9624cf61-ea51-4960-ba98-4afb1c08a669",
+      "style": {
+        "name": "theta_l2_q5_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 1900
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "c205cf6e-a3c4-4fa7-bad9-edfecf9cc8fd",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 2,
+        "position": {
+          "x": 640,
+          "y": 1780
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "b107e8a1-5c9d-4600-839b-770f4f264604",
+          "0e45470c-2668-44ec-9845-e54c21416c35",
+          "9624cf61-ea51-4960-ba98-4afb1c08a669"
+        ],
+        "targetQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "df49ea1f-4d05-40a6-9923-dee10937f23a",
+      "style": {
+        "name": "theta_l2_q6_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 1860
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "896318bf-0fd5-482a-bcf2-f5060aac0926",
+      "style": {
+        "name": "theta_l2_q6_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 1880
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "14674135-8312-4aad-b7cd-f5d1cf351eaa",
+      "style": {
+        "name": "theta_l2_q6_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 1900
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "3a92568d-36e3-4471-b995-12fcb2006f7e",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 2,
+        "position": {
+          "x": 760,
+          "y": 1780
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "df49ea1f-4d05-40a6-9923-dee10937f23a",
+          "896318bf-0fd5-482a-bcf2-f5060aac0926",
+          "14674135-8312-4aad-b7cd-f5d1cf351eaa"
+        ],
+        "targetQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "02c2e32b-7df0-488c-9cb1-096ff97d44ca",
+      "style": {
+        "name": "theta_l2_q7_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 1860
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "52c67038-21f1-49b1-b67c-b56c54862fe0",
+      "style": {
+        "name": "theta_l2_q7_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 1880
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "50c0c5bf-89db-4b55-9c9f-b5f04904215e",
+      "style": {
+        "name": "theta_l2_q7_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 1900
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "33afda9f-b2d4-4ed8-bf0a-97bdff3b290f",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 2,
+        "position": {
+          "x": 880,
+          "y": 1780
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "02c2e32b-7df0-488c-9cb1-096ff97d44ca",
+          "52c67038-21f1-49b1-b67c-b56c54862fe0",
+          "50c0c5bf-89db-4b55-9c9f-b5f04904215e"
+        ],
+        "targetQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "63c9b156-3182-4466-b0a9-c4c5ecaf89d2",
+      "style": {
+        "name": "CNOT_0_1",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 2,
+        "position": {
+          "x": 40,
+          "y": 1940
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ],
+        "targetQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "2e37f176-c5c0-4433-b7b2-3d73c455639a",
+      "style": {
+        "name": "CNOT_1_2",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 2,
+        "position": {
+          "x": 160,
+          "y": 1940
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ],
+        "targetQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "0c41d354-128b-4e95-af57-c4f8f5fa81ec",
+      "style": {
+        "name": "CNOT_2_3",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 2,
+        "position": {
+          "x": 280,
+          "y": 1940
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ],
+        "targetQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "c5fbf60d-95ee-4a63-8a38-0fa64d2d39b8",
+      "style": {
+        "name": "CNOT_3_4",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 2,
+        "position": {
+          "x": 400,
+          "y": 1940
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ],
+        "targetQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "a1ab7d1d-ed20-47ed-8b41-c5480ddd724d",
+      "style": {
+        "name": "CNOT_4_5",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 2,
+        "position": {
+          "x": 520,
+          "y": 1940
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ],
+        "targetQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "21df10eb-2471-4cb6-bea2-1233d0403e3c",
+      "style": {
+        "name": "CNOT_5_6",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 2,
+        "position": {
+          "x": 640,
+          "y": 1940
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ],
+        "targetQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "b5f967cb-fe10-4fc1-95a5-abb3549704c7",
+      "style": {
+        "name": "CNOT_6_7",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 2,
+        "position": {
+          "x": 760,
+          "y": 1940
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ],
+        "targetQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "9781d2a6-6456-4363-a4ea-912c9ba8a377",
+      "style": {
+        "name": "CNOT_7_0",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 2,
+        "position": {
+          "x": 880,
+          "y": 1940
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ],
+        "targetQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "fb4703e3-d9c2-43d8-8a1d-5167e9cf4541",
+      "style": {
+        "name": "trainable_layer_3",
+        "index": 3,
+        "layerType": "Trainable",
+        "position": {
+          "x": 980,
+          "y": 2140
+        }
+      },
+      "references": {
+        "operations": [
+          "1186a408-5ca7-4d7a-b46b-c7e12340ef65",
+          "a3127c37-4849-4311-ac63-b3c1574aea54",
+          "4ae5f44e-2001-4cbb-8e10-d1c955803c03",
+          "282b3c88-3204-459d-94de-fa36aae1e8cc",
+          "89c1530a-b15e-4bb4-a556-234ab98fab3e",
+          "0389027f-ba3c-4811-941a-bc6f79a476b2",
+          "65be1bed-9635-47d7-86b0-baf460b78945",
+          "f8c660df-057e-41b7-ade2-0ba9d6eea8a5",
+          "7d2b2bdd-0521-416e-994b-9f6ff5281b5d",
+          "b3bf1eff-f4a0-41e3-ad72-10f7e26f6ab8",
+          "fc79abc1-67b0-474c-9b94-5e5182dda897",
+          "658e8c95-5015-4178-8650-4dec6de796cc",
+          "28399176-a61f-48dd-abac-3e0e6abd2c11",
+          "2f8a1860-f363-4ded-9eb6-862ad5bef02c",
+          "75cb9832-1f84-4853-ad9d-847e2b55d897",
+          "a8d2b210-e72d-48f8-a3e7-c6e4e8b3a0ac"
+        ]
+      },
+      "modelElementId": "6fb01c9f-c560-440e-a542-56e5439e907b"
+    },
+    {
+      "id": "ec280438-066c-4afc-b406-4e195c41eba0",
+      "style": {
+        "name": "theta_l3_q0_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 2300
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ba5991d4-5647-4381-890e-a98de2d81c0a",
+      "style": {
+        "name": "theta_l3_q0_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 2320
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ec433224-00b2-4f30-aa8a-d3f897b47c6b",
+      "style": {
+        "name": "theta_l3_q0_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 2340
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "1186a408-5ca7-4d7a-b46b-c7e12340ef65",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 3,
+        "position": {
+          "x": 40,
+          "y": 2220
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "ec280438-066c-4afc-b406-4e195c41eba0",
+          "ba5991d4-5647-4381-890e-a98de2d81c0a",
+          "ec433224-00b2-4f30-aa8a-d3f897b47c6b"
+        ],
+        "targetQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "6d144995-5f21-472e-b82c-a44e0a740efb",
+      "style": {
+        "name": "theta_l3_q1_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 2300
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "0eed27fd-1b34-49a1-abeb-c08e288d3c17",
+      "style": {
+        "name": "theta_l3_q1_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 2320
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "80e8c574-52ef-4c14-93bd-76aa34310de4",
+      "style": {
+        "name": "theta_l3_q1_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 2340
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "a3127c37-4849-4311-ac63-b3c1574aea54",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 3,
+        "position": {
+          "x": 160,
+          "y": 2220
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "6d144995-5f21-472e-b82c-a44e0a740efb",
+          "0eed27fd-1b34-49a1-abeb-c08e288d3c17",
+          "80e8c574-52ef-4c14-93bd-76aa34310de4"
+        ],
+        "targetQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "406dae51-4923-46f6-9a85-42c3e53a1189",
+      "style": {
+        "name": "theta_l3_q2_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 2300
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "7d7478aa-c33a-4ca2-9930-21188eaa0db9",
+      "style": {
+        "name": "theta_l3_q2_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 2320
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "91ad2d44-cfd4-4795-b4b0-f112641b1188",
+      "style": {
+        "name": "theta_l3_q2_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 2340
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "4ae5f44e-2001-4cbb-8e10-d1c955803c03",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 3,
+        "position": {
+          "x": 280,
+          "y": 2220
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "406dae51-4923-46f6-9a85-42c3e53a1189",
+          "7d7478aa-c33a-4ca2-9930-21188eaa0db9",
+          "91ad2d44-cfd4-4795-b4b0-f112641b1188"
+        ],
+        "targetQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "6ea089dc-b9b3-4a28-87ef-d5deb54d56f1",
+      "style": {
+        "name": "theta_l3_q3_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 2300
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "8d71676d-0d8f-4960-8fa4-430fa839ae6e",
+      "style": {
+        "name": "theta_l3_q3_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 2320
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "2e0a1f00-57b3-4bee-b58a-03f701e5bd01",
+      "style": {
+        "name": "theta_l3_q3_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 2340
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "282b3c88-3204-459d-94de-fa36aae1e8cc",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 3,
+        "position": {
+          "x": 400,
+          "y": 2220
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "6ea089dc-b9b3-4a28-87ef-d5deb54d56f1",
+          "8d71676d-0d8f-4960-8fa4-430fa839ae6e",
+          "2e0a1f00-57b3-4bee-b58a-03f701e5bd01"
+        ],
+        "targetQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "77c8b5b3-975b-45cc-8dea-9e1d4d52cb29",
+      "style": {
+        "name": "theta_l3_q4_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 2300
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "f7dd52e7-b43d-41d4-b274-050fb0e3fce4",
+      "style": {
+        "name": "theta_l3_q4_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 2320
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "1d6a4274-0212-4d81-9467-7459ed7b3dee",
+      "style": {
+        "name": "theta_l3_q4_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 2340
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "89c1530a-b15e-4bb4-a556-234ab98fab3e",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 3,
+        "position": {
+          "x": 520,
+          "y": 2220
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "77c8b5b3-975b-45cc-8dea-9e1d4d52cb29",
+          "f7dd52e7-b43d-41d4-b274-050fb0e3fce4",
+          "1d6a4274-0212-4d81-9467-7459ed7b3dee"
+        ],
+        "targetQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "86614395-810b-4d1a-9688-0fe0edd46084",
+      "style": {
+        "name": "theta_l3_q5_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 2300
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "3dea9332-c70a-4bdf-99aa-e3e74cc64edd",
+      "style": {
+        "name": "theta_l3_q5_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 2320
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ea6d9c16-a74e-487c-8fce-8373c00799c9",
+      "style": {
+        "name": "theta_l3_q5_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 2340
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "0389027f-ba3c-4811-941a-bc6f79a476b2",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 3,
+        "position": {
+          "x": 640,
+          "y": 2220
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "86614395-810b-4d1a-9688-0fe0edd46084",
+          "3dea9332-c70a-4bdf-99aa-e3e74cc64edd",
+          "ea6d9c16-a74e-487c-8fce-8373c00799c9"
+        ],
+        "targetQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "ca3058ec-a0ab-4388-bf0b-cbb2fba570c9",
+      "style": {
+        "name": "theta_l3_q6_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 2300
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "0b81d203-834e-46dc-9e5c-c2ec484224cb",
+      "style": {
+        "name": "theta_l3_q6_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 2320
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "53d03bf6-57fc-4044-9693-d8ee819b3bed",
+      "style": {
+        "name": "theta_l3_q6_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 2340
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "65be1bed-9635-47d7-86b0-baf460b78945",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 3,
+        "position": {
+          "x": 760,
+          "y": 2220
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "ca3058ec-a0ab-4388-bf0b-cbb2fba570c9",
+          "0b81d203-834e-46dc-9e5c-c2ec484224cb",
+          "53d03bf6-57fc-4044-9693-d8ee819b3bed"
+        ],
+        "targetQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "3bf932be-1c5c-4133-94a0-629c54efdf2c",
+      "style": {
+        "name": "theta_l3_q7_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 2300
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "a5298e32-f409-4cfc-b538-c4009996d39f",
+      "style": {
+        "name": "theta_l3_q7_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 2320
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "89b62918-8662-49d1-8433-32e40dfbe869",
+      "style": {
+        "name": "theta_l3_q7_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 2340
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "f8c660df-057e-41b7-ade2-0ba9d6eea8a5",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 3,
+        "position": {
+          "x": 880,
+          "y": 2220
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "3bf932be-1c5c-4133-94a0-629c54efdf2c",
+          "a5298e32-f409-4cfc-b538-c4009996d39f",
+          "89b62918-8662-49d1-8433-32e40dfbe869"
+        ],
+        "targetQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "7d2b2bdd-0521-416e-994b-9f6ff5281b5d",
+      "style": {
+        "name": "CNOT_0_1",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 3,
+        "position": {
+          "x": 40,
+          "y": 2380
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ],
+        "targetQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "b3bf1eff-f4a0-41e3-ad72-10f7e26f6ab8",
+      "style": {
+        "name": "CNOT_1_2",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 3,
+        "position": {
+          "x": 160,
+          "y": 2380
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ],
+        "targetQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "fc79abc1-67b0-474c-9b94-5e5182dda897",
+      "style": {
+        "name": "CNOT_2_3",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 3,
+        "position": {
+          "x": 280,
+          "y": 2380
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ],
+        "targetQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "658e8c95-5015-4178-8650-4dec6de796cc",
+      "style": {
+        "name": "CNOT_3_4",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 3,
+        "position": {
+          "x": 400,
+          "y": 2380
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ],
+        "targetQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "28399176-a61f-48dd-abac-3e0e6abd2c11",
+      "style": {
+        "name": "CNOT_4_5",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 3,
+        "position": {
+          "x": 520,
+          "y": 2380
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ],
+        "targetQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "2f8a1860-f363-4ded-9eb6-862ad5bef02c",
+      "style": {
+        "name": "CNOT_5_6",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 3,
+        "position": {
+          "x": 640,
+          "y": 2380
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ],
+        "targetQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "75cb9832-1f84-4853-ad9d-847e2b55d897",
+      "style": {
+        "name": "CNOT_6_7",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 3,
+        "position": {
+          "x": 760,
+          "y": 2380
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ],
+        "targetQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "a8d2b210-e72d-48f8-a3e7-c6e4e8b3a0ac",
+      "style": {
+        "name": "CNOT_7_0",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 3,
+        "position": {
+          "x": 880,
+          "y": 2380
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ],
+        "targetQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "d797baf8-5947-4b3e-8dba-85f1e6939a63",
+      "style": {
+        "name": "trainable_layer_4",
+        "index": 4,
+        "layerType": "Trainable",
+        "position": {
+          "x": 760,
+          "y": 2580
+        }
+      },
+      "references": {
+        "operations": [
+          "c04cdf05-1af4-4d8b-bf79-d722d2af4965",
+          "ccc1f18b-2e2c-43da-899f-23640160be99",
+          "a67020ae-1384-4d49-a324-e6a1211ffe1b",
+          "e1e9abe3-fff0-4b69-affd-306e714e7159",
+          "ad07c494-8e0b-464a-9c08-dfe98441ae7a",
+          "2999b2c9-1f07-4904-82f5-70d168defa3c",
+          "82fb263d-4bc7-4a1d-a6b4-e33fdcefada2",
+          "dbdbd9e2-5b43-4f7c-8469-3605cf520967",
+          "fd7a9aed-5aab-4ae7-b2e2-b15908b7e514",
+          "b767707c-183f-4659-a09c-b53f0ccff005",
+          "0a339aec-e002-4952-920f-f6e4442dd0a9",
+          "1c65a1a1-1c6f-4cb9-9b1d-a7fcf7cb2684",
+          "be8149dd-b9d9-4243-bc8d-b84f7525e36e",
+          "73dc0685-9950-4c0b-86a8-bb745aaded64",
+          "9a268971-e950-47ab-bf65-90ea6c87a644",
+          "6c2a9225-aba9-477d-940c-409fa9a17241"
+        ]
+      },
+      "modelElementId": "6fb01c9f-c560-440e-a542-56e5439e907b"
+    },
+    {
+      "id": "fb144973-6f5a-467e-96d7-1f02575d4320",
+      "style": {
+        "name": "theta_l4_q0_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 2740
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "3484d91c-6748-46e4-8f4d-a01ebb58749f",
+      "style": {
+        "name": "theta_l4_q0_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 2760
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "27ac1ff8-392d-4628-90af-a72da13d333d",
+      "style": {
+        "name": "theta_l4_q0_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 40,
+          "y": 2780
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "c04cdf05-1af4-4d8b-bf79-d722d2af4965",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 4,
+        "position": {
+          "x": 40,
+          "y": 2660
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "fb144973-6f5a-467e-96d7-1f02575d4320",
+          "3484d91c-6748-46e4-8f4d-a01ebb58749f",
+          "27ac1ff8-392d-4628-90af-a72da13d333d"
+        ],
+        "targetQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "5818d86e-6f1b-4b1e-8334-858a367612ed",
+      "style": {
+        "name": "theta_l4_q1_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 2740
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "9e277192-5c0d-4366-8be8-6fd38a4524db",
+      "style": {
+        "name": "theta_l4_q1_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 2760
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "76803ced-1c4c-49a9-b6c5-3cddf057f6b7",
+      "style": {
+        "name": "theta_l4_q1_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 160,
+          "y": 2780
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ccc1f18b-2e2c-43da-899f-23640160be99",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 4,
+        "position": {
+          "x": 160,
+          "y": 2660
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "5818d86e-6f1b-4b1e-8334-858a367612ed",
+          "9e277192-5c0d-4366-8be8-6fd38a4524db",
+          "76803ced-1c4c-49a9-b6c5-3cddf057f6b7"
+        ],
+        "targetQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "7bbeb6a6-561d-4876-a8e8-5719928ebd44",
+      "style": {
+        "name": "theta_l4_q2_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 2740
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "f1ceefac-3835-40e7-89bf-4bc429073b30",
+      "style": {
+        "name": "theta_l4_q2_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 2760
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "b658ecb5-68c7-42a0-9647-ef0f766c2f2c",
+      "style": {
+        "name": "theta_l4_q2_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 280,
+          "y": 2780
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "a67020ae-1384-4d49-a324-e6a1211ffe1b",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 4,
+        "position": {
+          "x": 280,
+          "y": 2660
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "7bbeb6a6-561d-4876-a8e8-5719928ebd44",
+          "f1ceefac-3835-40e7-89bf-4bc429073b30",
+          "b658ecb5-68c7-42a0-9647-ef0f766c2f2c"
+        ],
+        "targetQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "6fc44ca3-8837-4fdf-aa89-d684fdbee319",
+      "style": {
+        "name": "theta_l4_q3_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 2740
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "4e965b10-0813-4275-a1d8-cb4a48fd6e18",
+      "style": {
+        "name": "theta_l4_q3_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 2760
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "d2711ec3-965b-4bd5-be96-29070b485a9d",
+      "style": {
+        "name": "theta_l4_q3_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 400,
+          "y": 2780
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "e1e9abe3-fff0-4b69-affd-306e714e7159",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 4,
+        "position": {
+          "x": 400,
+          "y": 2660
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "6fc44ca3-8837-4fdf-aa89-d684fdbee319",
+          "4e965b10-0813-4275-a1d8-cb4a48fd6e18",
+          "d2711ec3-965b-4bd5-be96-29070b485a9d"
+        ],
+        "targetQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "f3ba0211-5e4d-4cb3-85c2-48c456872c79",
+      "style": {
+        "name": "theta_l4_q4_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 2740
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "c36ecc6a-9518-4571-bbf0-021c21aa35b9",
+      "style": {
+        "name": "theta_l4_q4_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 2760
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ec4fdb6f-f0d7-4f0e-8af8-caeb8ae0ed0c",
+      "style": {
+        "name": "theta_l4_q4_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 520,
+          "y": 2780
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ad07c494-8e0b-464a-9c08-dfe98441ae7a",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 4,
+        "position": {
+          "x": 520,
+          "y": 2660
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "f3ba0211-5e4d-4cb3-85c2-48c456872c79",
+          "c36ecc6a-9518-4571-bbf0-021c21aa35b9",
+          "ec4fdb6f-f0d7-4f0e-8af8-caeb8ae0ed0c"
+        ],
+        "targetQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "2f90c4f6-feaa-459a-afe0-61eafc923d83",
+      "style": {
+        "name": "theta_l4_q5_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 2740
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "0b06aa8d-dc5e-4c0e-b213-ce49cd7696d4",
+      "style": {
+        "name": "theta_l4_q5_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 2760
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "a2de2cff-f196-41ce-9e95-eed6c3e7d938",
+      "style": {
+        "name": "theta_l4_q5_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 640,
+          "y": 2780
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "2999b2c9-1f07-4904-82f5-70d168defa3c",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 4,
+        "position": {
+          "x": 640,
+          "y": 2660
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "2f90c4f6-feaa-459a-afe0-61eafc923d83",
+          "0b06aa8d-dc5e-4c0e-b213-ce49cd7696d4",
+          "a2de2cff-f196-41ce-9e95-eed6c3e7d938"
+        ],
+        "targetQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "1182f696-6747-40be-b078-26e6100aa76e",
+      "style": {
+        "name": "theta_l4_q6_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 2740
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "4b768b37-22dd-4d6e-81a3-8cc3f89aeb7a",
+      "style": {
+        "name": "theta_l4_q6_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 2760
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "ca35491d-4779-43f8-be35-298f04d9126c",
+      "style": {
+        "name": "theta_l4_q6_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 760,
+          "y": 2780
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "82fb263d-4bc7-4a1d-a6b4-e33fdcefada2",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 4,
+        "position": {
+          "x": 760,
+          "y": 2660
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "1182f696-6747-40be-b078-26e6100aa76e",
+          "4b768b37-22dd-4d6e-81a3-8cc3f89aeb7a",
+          "ca35491d-4779-43f8-be35-298f04d9126c"
+        ],
+        "targetQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "2a57d813-13d3-4438-af99-a7ff698bec6d",
+      "style": {
+        "name": "theta_l4_q7_0",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 2740
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "0fe7a5d0-663f-467c-bcce-a3b524446d2e",
+      "style": {
+        "name": "theta_l4_q7_1",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 2760
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "466ad74e-3e93-4f2f-b4e0-e5c8d0f8528d",
+      "style": {
+        "name": "theta_l4_q7_2",
+        "currentValue": 0.0,
+        "position": {
+          "x": 880,
+          "y": 2780
+        }
+      },
+      "references": {},
+      "modelElementId": "eb53fb05-5988-4bc4-9fee-0df96cea2227"
+    },
+    {
+      "id": "dbdbd9e2-5b43-4f7c-8469-3605cf520967",
+      "style": {
+        "name": "Rot",
+        "inverse": false,
+        "controlled": false,
+        "layerIndex": 4,
+        "position": {
+          "x": 880,
+          "y": 2660
+        }
+      },
+      "references": {
+        "parameterRef": [
+          "2a57d813-13d3-4438-af99-a7ff698bec6d",
+          "0fe7a5d0-663f-467c-bcce-a3b524446d2e",
+          "466ad74e-3e93-4f2f-b4e0-e5c8d0f8528d"
+        ],
+        "targetQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ]
+      },
+      "modelElementId": "e2dce8d6-bb05-4c99-ad29-bdb1135cc4f4"
+    },
+    {
+      "id": "fd7a9aed-5aab-4ae7-b2e2-b15908b7e514",
+      "style": {
+        "name": "CNOT_0_1",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 4,
+        "position": {
+          "x": 40,
+          "y": 2820
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ],
+        "targetQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "b767707c-183f-4659-a09c-b53f0ccff005",
+      "style": {
+        "name": "CNOT_1_2",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 4,
+        "position": {
+          "x": 160,
+          "y": 2820
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "2f808486-3cfa-4daf-bb85-fed749cb07e4"
+        ],
+        "targetQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "0a339aec-e002-4952-920f-f6e4442dd0a9",
+      "style": {
+        "name": "CNOT_2_3",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 4,
+        "position": {
+          "x": 280,
+          "y": 2820
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2"
+        ],
+        "targetQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "1c65a1a1-1c6f-4cb9-9b1d-a7fcf7cb2684",
+      "style": {
+        "name": "CNOT_3_4",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 4,
+        "position": {
+          "x": 400,
+          "y": 2820
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "f6d42599-3989-4a55-adc4-90dc05f2dd8b"
+        ],
+        "targetQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "be8149dd-b9d9-4243-bc8d-b84f7525e36e",
+      "style": {
+        "name": "CNOT_4_5",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 4,
+        "position": {
+          "x": 520,
+          "y": 2820
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "cf607f7c-480d-4b0f-ac85-6782dc81d3d7"
+        ],
+        "targetQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "73dc0685-9950-4c0b-86a8-bb745aaded64",
+      "style": {
+        "name": "CNOT_5_6",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 4,
+        "position": {
+          "x": 640,
+          "y": 2820
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "04e0f4ee-7e64-4500-b986-9bf7b02e14c9"
+        ],
+        "targetQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "9a268971-e950-47ab-bf65-90ea6c87a644",
+      "style": {
+        "name": "CNOT_6_7",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 4,
+        "position": {
+          "x": 760,
+          "y": 2820
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "e63f2f3d-7066-4a53-8edd-99834402248f"
+        ],
+        "targetQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "6c2a9225-aba9-477d-940c-409fa9a17241",
+      "style": {
+        "name": "CNOT_7_0",
+        "gateType": "CNOT",
+        "inverse": false,
+        "controlled": true,
+        "theta": 0,
+        "phi": 0,
+        "lambda": 0,
+        "layerIndex": 4,
+        "position": {
+          "x": 880,
+          "y": 2820
+        }
+      },
+      "references": {
+        "controlQubits": [
+          "a09487cb-cbeb-450a-a217-7799833fa072"
+        ],
+        "targetQubits": [
+          "3d8973a5-298b-4fe2-9152-0315d104ed47"
+        ]
+      },
+      "modelElementId": "11a721b8-0b32-4be9-a7e8-b0937571e72a"
+    },
+    {
+      "id": "6fe9d6c8-cb14-42ff-84c8-95c763f7ad21",
+      "style": {
+        "name": "creditcard_fraud_classifier_qc",
+        "position": {
+          "x": 860,
+          "y": 1140
+        }
+      },
+      "references": {
+        "quantumRegisters": [
+          "2290872f-5e29-4630-8bd7-9a4629b61b57"
+        ],
+        "classicRegisters": [],
+        "compositeOperation": [
+          "4e5173cf-c0b7-421f-a6e3-0e8047d64b59"
+        ],
+        "executionConfig": [
+          "4b2326eb-00db-482e-af9d-f517a8a81972"
+        ]
+      },
+      "modelElementId": "d6d3ef59-fb34-41bc-9ae6-df28caffe0a5"
+    },
+    {
+      "id": "3d8973a5-298b-4fe2-9152-0315d104ed47",
+      "style": {
+        "name": "q[0]",
+        "index": 0,
+        "position": {
+          "x": 40,
+          "y": 820
+        }
+      },
+      "references": {},
+      "modelElementId": "5a88e992-c364-461c-b1f0-8d4aa81ee511"
+    },
+    {
+      "id": "2f808486-3cfa-4daf-bb85-fed749cb07e4",
+      "style": {
+        "name": "q[1]",
+        "index": 1,
+        "position": {
+          "x": 160,
+          "y": 820
+        }
+      },
+      "references": {},
+      "modelElementId": "5a88e992-c364-461c-b1f0-8d4aa81ee511"
+    },
+    {
+      "id": "e4c11ae7-84aa-45d0-8fa3-b794099ff1a2",
+      "style": {
+        "name": "q[2]",
+        "index": 2,
+        "position": {
+          "x": 280,
+          "y": 820
+        }
+      },
+      "references": {},
+      "modelElementId": "5a88e992-c364-461c-b1f0-8d4aa81ee511"
+    },
+    {
+      "id": "f6d42599-3989-4a55-adc4-90dc05f2dd8b",
+      "style": {
+        "name": "q[3]",
+        "index": 3,
+        "position": {
+          "x": 400,
+          "y": 820
+        }
+      },
+      "references": {},
+      "modelElementId": "5a88e992-c364-461c-b1f0-8d4aa81ee511"
+    },
+    {
+      "id": "cf607f7c-480d-4b0f-ac85-6782dc81d3d7",
+      "style": {
+        "name": "q[4]",
+        "index": 4,
+        "position": {
+          "x": 520,
+          "y": 820
+        }
+      },
+      "references": {},
+      "modelElementId": "5a88e992-c364-461c-b1f0-8d4aa81ee511"
+    },
+    {
+      "id": "04e0f4ee-7e64-4500-b986-9bf7b02e14c9",
+      "style": {
+        "name": "q[5]",
+        "index": 5,
+        "position": {
+          "x": 640,
+          "y": 820
+        }
+      },
+      "references": {},
+      "modelElementId": "5a88e992-c364-461c-b1f0-8d4aa81ee511"
+    },
+    {
+      "id": "e63f2f3d-7066-4a53-8edd-99834402248f",
+      "style": {
+        "name": "q[6]",
+        "index": 6,
+        "position": {
+          "x": 760,
+          "y": 820
+        }
+      },
+      "references": {},
+      "modelElementId": "5a88e992-c364-461c-b1f0-8d4aa81ee511"
+    },
+    {
+      "id": "a09487cb-cbeb-450a-a217-7799833fa072",
+      "style": {
+        "name": "q[7]",
+        "index": 7,
+        "position": {
+          "x": 880,
+          "y": 820
+        }
+      },
+      "references": {},
+      "modelElementId": "5a88e992-c364-461c-b1f0-8d4aa81ee511"
+    },
+    {
+      "id": "4b2326eb-00db-482e-af9d-f517a8a81972",
+      "style": {
+        "name": "mainpy_runtime",
+        "backendName": "default.qubit",
+        "interface": "jax",
+        "diffMethod": "backprop",
+        "seed": 42,
+        "position": {
+          "x": 1400,
+          "y": 40
+        }
+      },
+      "references": {},
+      "modelElementId": "2f75afc3-9350-4b62-a32c-fecdcc0970c9"
+    }
+  ],
+  "connections": [],
+  "conformsTo": "f8f0d811-3a2f-4620-8e14-a9dc4e14178f",
+  "isOwner": true
+}

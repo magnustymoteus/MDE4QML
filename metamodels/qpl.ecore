@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" 
+  xmlns:xmi="http://www.omg.org/XMI" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" 
+  name="qpl" 
+  nsPrefix="qml" 
+  nsURI="http://qml">
+  <eClassifiers xsi:type="ecore:EClass" name="Dataset">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="features" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" upperBound="-1">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labels" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" upperBound="-1">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PreprocessingPipeline">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputDimension" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataset" 
+      eType="#//Dataset" upperBound="1" 
+      containment="false">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="steps" 
+      eType="#//PreprocessingStep" upperBound="100" lowerBound="1" 
+      containment="true">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PreprocessingStep" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stepType" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" lowerBound="1">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enabled" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="config" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" upperBound="-1">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StandardScalerStep">
+    <eSuperTypes href="#//PreprocessingStep"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DimensionalityReductionStep" abstract="true">
+    <eSuperTypes href="#//PreprocessingStep"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetDimension" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PCAStep">
+    <eSuperTypes href="#//DimensionalityReductionStep"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataEmbedding">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="embeddingType" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataset" 
+      eType="#//Dataset" upperBound="1" 
+      containment="false">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="preprocessingPipeline" 
+      eType="#//PreprocessingPipeline" upperBound="1" 
+      containment="false">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Optimizer">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxIterations" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optimizerType" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="learningRate" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="batchSize" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LossFunction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minimization" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentValue" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="positiveClassWeight" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Prediction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="predictedValue" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="postprocessingMethod" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="threshold" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputScale" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputShift" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lossFunction" 
+      eType="#//LossFunction" upperBound="1" 
+      containment="true">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Task">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskType" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="prediction" 
+      eType="#//Prediction" upperBound="1" 
+      containment="true">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Observable" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="qubits" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble" upperBound="-1">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PauliX">
+    <eSuperTypes href="#//Observable"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PauliY">
+    <eSuperTypes href="#//Observable"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PauliZ">
+    <eSuperTypes href="#//Observable"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PauliProduct">
+    <eSuperTypes href="#//Observable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="terms" 
+      eType="#//Observable" upperBound="100" 
+      containment="true">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Hamiltonian">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coefficients" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" upperBound="-1">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="terms" 
+      eType="#//Observable" upperBound="100" 
+      containment="true">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MeasurementProcess">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfShots" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="basis" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="hamiltonian" 
+      eType="#//Hamiltonian" upperBound="1" 
+      containment="true">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExpectationValue">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="measurementProcess" 
+      eType="#//MeasurementProcess" upperBound="1" 
+      containment="true">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Selector" abstract="true">
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementSelector">
+    <eSuperTypes href="#//Selector"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RangeSelector">
+    <eSuperTypes href="#//Selector"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="begin" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="end" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QuantumOperation" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="inverse" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="controlled" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="controlQubits" 
+      eType="#//Selector" upperBound="100" 
+      containment="true">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetQubits" 
+      eType="#//Selector" upperBound="100" 
+      containment="true">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classicBits" 
+      eType="#//Selector" upperBound="100" 
+      containment="true">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Measurement">
+    <eSuperTypes href="#//QuantumOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="basis" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StatePreparation">
+    <eSuperTypes href="#//QuantumOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preparationType" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layerIndex" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ParameterizedGate">
+    <eSuperTypes href="#//QuantumOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layerIndex" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameterRef" 
+      eType="#//TrainableParameter" upperBound="100" 
+      containment="false">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementaryQuantumGate">
+    <eSuperTypes href="#//QuantumOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gateType" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="theta" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="phi" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lambda" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layerIndex" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TrainableParameter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentValue" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QuantumRegister">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfQubits" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassicRegister">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfBits" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Layer">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layerType" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operations" 
+      eType="#//QuantumOperation" upperBound="100" 
+      containment="true">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CompositeQuantumOperation">
+    <eSuperTypes href="#//QuantumOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="layers" 
+      eType="#//Layer" upperBound="100" lowerBound="1" 
+      containment="true">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QuantumCircuit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="quantumRegisters" 
+      eType="#//QuantumRegister" upperBound="100" 
+      containment="true">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classicRegisters" 
+      eType="#//ClassicRegister" upperBound="100" 
+      containment="true">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="compositeOperation" 
+      eType="#//CompositeQuantumOperation" upperBound="1" 
+      containment="true">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="executionConfig" 
+      eType="#//QuantumExecutionConfig" upperBound="1" 
+      containment="false">
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QuantumExecutionConfig">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backendName" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="interface" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="diffMethod" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="seed" 
+      eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>

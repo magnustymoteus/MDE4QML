@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "jax>=0.10.1",
+    "jax[cuda13]>=0.10.1",
     "jaxlib>=0.10.1",
     "matplotlib>=3.10.9",
     "optax>=0.2.8",

@@ -172,8 +172,6 @@ init_params = jnp.array([
 {{/each}}], dtype=jnp.float32)
 
 key = jax.random.PRNGKey(42)
-# FIX 2: Use 0.1 scale (standard for QML ansatze) instead of 0.01.
-# 0.01 caused near-zero initial rotations and vanishing gradients.
 params = init_params + 0.1 * jax.random.normal(key, shape=init_params.shape, dtype=jnp.float32)
 
 _param_list = [
@@ -241,10 +239,6 @@ def ansatz(params):
 {{#each elementsByClassName.Hamiltonian}}# Hamiltonian: {{name}}  coefficients: {{#each coefficients}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
 {{/each}}
 
-# FIX 3: circuit signature is (params, x) so it is consistent with
-# loss(params, x, y) and batched_circuit vmap(in_axes=(None, 0)).
-# The old (x, params) order caused loss() to pass arguments in the
-# wrong slots when called via jax.vmap(loss, in_axes=(None, 0, 0)).
 @qml.qnode(dev, interface=execution_interface, diff_method=execution_diff_method)
 def circuit(params, x):
     embedding(x)
@@ -264,7 +258,6 @@ def circuit(params, x):
 {{/each}}
     return qml.math.stack(measurements)
 
-# params is constant across the batch; x is batched over axis 0
 batched_circuit = jax.vmap(circuit, in_axes=(None, 0))
 
 # ------------------------------------------------------------
@@ -344,12 +337,6 @@ def train_step(params, opt_state, X_batch, y_batch):
 
 # ------------------------------------------------------------
 # TRAINING LOOP
-# FIX 1: max_iterations is treated as epochs (full passes over the
-# training data), not as raw gradient steps. The old code drew a
-# single random mini-batch per iteration, giving ~44x fewer gradient
-# updates for the same max_iterations value and causing the loss to
-# plateau around 1.5. An epoch loop with batch_size-sized windows is
-# the correct general semantic for any QML training configuration.
 # ------------------------------------------------------------
 
 def train(X_train, y_train):
